@@ -1,20 +1,16 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
-import image1 from './Images/pexels-patrick-case-3657154.jpg'
 
 export default class News extends Component {
      constructor() {
           super();
-          this.state = {
-               articles: [],
-               loading: false
-          };
+          this.state = { articles: [], loading: false };
      }
 
      async componentDidMount() {
           let data = await fetch("https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=bf62df5e33284fd2a10663b8295b5303");
           let parsedData = await data.json();
-          this.setState({articles: parsedData.articles})
+          this.setState({articles: parsedData.articles});
      }
      render() {
           return (
