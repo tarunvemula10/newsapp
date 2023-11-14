@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
+import Loading from './Loading';
 
 export default class News extends Component {
      constructor() {
@@ -8,33 +9,37 @@ export default class News extends Component {
      }
 
      async componentDidMount() {
+          this.setState({loading: true})
           let data = await fetch("https://newsapi.org/v2/top-headlines?country=in&apiKey=bf62df5e33284fd2a10663b8295b5303&page=1&pageSize=12");
           let parsedData = await data.json();
-          this.setState({articles: parsedData.articles, totalResults: parsedData.totalResults});
+          this.setState({articles: parsedData.articles, totalResults: parsedData.totalResults, loading:false});
      }
 
      getPrevPage = async () => {
+          this.setState({loading: true})
           let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=bf62df5e33284fd2a10663b8295b5303&page=${this.state.page-1}&pageSize=12`
           let data = await fetch(url);
           let parsedData = await data.json();
-          this.setState({articles: parsedData.articles, page: this.state.page-1});
+          this.setState({articles: parsedData.articles, page: this.state.page-1, loading: false});
      }
 
      getNextPage = async () => {
           if(this.state.page+1 <= (Math.ceil(this.state.totalResults/12))) {
+               this.setState({loading: true})
                let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=bf62df5e33284fd2a10663b8295b5303&page=${this.state.page+1}&pageSize=12`
                let data = await fetch(url);
                let parsedData = await data.json();
-               this.setState({articles: parsedData.articles, page: this.state.page+1});
+               this.setState({articles: parsedData.articles, page: this.state.page+1, loading: false});
           }
      }
 
      render() {
           return (
           <div className='container my-4'>
-               <h2>Headlines for today</h2>
+               <h2 className='text-center'>Headlines for today</h2>
+               {this.state.loading && <Loading/>}
                <div className="row my-4">
-                    {this.state.articles.map((element) => {
+                    {!this.state.loading && this.state.articles.map((element) => {
                          return <div className="col-md-4" key={element.url}>
                               <NewsItem title={(element.title!==null) ? element.title.slice(0, 40) : ""} description={(element.description!==null)?element.description.slice(0, 88) : ""} imageUrl={element.urlToImage} newsUrl={element.url}/>
                          </div>
