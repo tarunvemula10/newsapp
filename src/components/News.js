@@ -44,7 +44,7 @@ export default class News extends Component {
      render() {
           return (
           <div className='container my-4'>
-               <h2 className='text-center'>Headlines for today</h2>
+               <h2 className='text-center'>Headlines for today - {(this.props.category).charAt(0).toUpperCase()+(this.props.category).slice(1)}</h2>
                {this.state.loading && <Loading/>}
                <div className="row my-4">
                     {!this.state.loading && this.state.articles.map((element) => {
@@ -52,7 +52,8 @@ export default class News extends Component {
                               <NewsItem title={(element.title!==null) ? element.title.slice(0, 40) : ""} 
                               description={(element.description!==null)?element.description.slice(0, 88) : ""} 
                               imageUrl={element.urlToImage} newsUrl={element.url}
-                              author={(element.author!=null) ? element.author : "Unknown"} date={element.publishedAt}/>
+                              author={(element.author!=null) ? element.author : "Unknown"} date={element.publishedAt}
+                              popTitle={element.title}/>
                          </div>
                     })}
                </div>
