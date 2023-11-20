@@ -21,7 +21,7 @@ export default class News extends Component {
 
      updateNews = async () => {
           this.props.setProgress(10);
-          let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=bf62df5e33284fd2a10663b8295b5303&page=${this.state.page}&pageSize=12`
+          let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=12`
           this.props.setProgress(50);
           this.setState({loading: true})
           let data = await fetch(url);
@@ -47,7 +47,7 @@ export default class News extends Component {
 
      fetchMoreData = async () => {
           this.setState({page: this.state.page + 1});
-          let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=bf62df5e33284fd2a10663b8295b5303&page=${this.state.page}&pageSize=6`
+          let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=6`
           this.setState({loading: true})
           let data = await fetch(url);
           let parsedData = await data.json();
@@ -63,7 +63,7 @@ export default class News extends Component {
                     dataLength={this.state.articles.length}
                     next={this.fetchMoreData}
                     hasMore={this.state.articles.length !== this.state.totalResults}
-                    loader={(this.state.articles.length>=this.state.totalResults-1) ? <div className="card-footer text-body-secondary text-center">
+                    loader={(this.state.articles.length >= this.state.totalResults-1) ? <div className="card-footer text-body-secondary text-center">
                     End of the results </div> : <Loading/>}
                >
                     <div className="container">
