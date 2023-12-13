@@ -11,17 +11,16 @@ const News = (props)=> {
      const [page, updatePage] = useState(2);
      const [totalResults, updateTotalResults] = useState(0);
 
-     // document.title = `${(props.category).charAt(0).toUpperCase()+(props.category).slice(1)} - NewsHustlers`;
-
      useEffect(()=> {
-          updateNews()
+          document.title = `${(props.category).charAt(0).toUpperCase()+(props.category).slice(1)} - NewsHustlers`;
+          updateNews();
      }, []);
 
      const updateNews = async () => {
           props.setProgress(10);
           let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=12`
           props.setProgress(50);
-          setLoading(true)
+          setLoading(true);
           let data = await fetch(url);
           props.setProgress(70);
           let parsedData = await data.json();
@@ -46,17 +45,17 @@ const News = (props)=> {
      */
 
      const fetchMoreData = async () => {
+          let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=6`
           updatePage(page + 1);
-          let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=6`
-          setLoading(true)
+          setLoading(true);
           let data = await fetch(url);
           let parsedData = await data.json();
           updateArticles(articles.concat(parsedData.articles))
           setLoading(false);
      }
      return (
-          <>
-               <h2 className='text-center'>Headlines for today - {(props.category).charAt(0).toUpperCase()+(props.category).slice(1)}</h2>
+          <div className='pt-5'>
+               <h2 className='text-center mt-3'>Headlines for today - {(props.category).charAt(0).toUpperCase()+(props.category).slice(1)}</h2>
                {/* {loading && <Loading/>} */}
                <InfiniteScroll
                     dataLength={articles.length}
@@ -84,7 +83,7 @@ const News = (props)=> {
                     <button disabled={page<=1} type="button" className="btn btn-dark" onClick={getPrevPage}>&larr; Previous</button>
                     <button disabled={page+1 > (Math.ceil(totalResults/12))} type="button" className="btn btn-dark" onClick={getNextPage}>Next &rarr;</button>
                </div> */}
-          </>
+          </div>
      )
 }
 News.defaultProps = { country: 'in', category: 'general' }
