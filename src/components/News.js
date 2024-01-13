@@ -14,6 +14,7 @@ const News = (props)=> {
      useEffect(()=> {
           document.title = `${(props.category).charAt(0).toUpperCase()+(props.category).slice(1)} - NewsHustlers`;
           updateNews();
+          // eslint-disable-next-line
      }, []);
 
      const updateNews = async () => {
@@ -62,7 +63,7 @@ const News = (props)=> {
                     next={fetchMoreData}
                     hasMore={articles.length !== totalResults}
                     loader={(articles.length >= totalResults-1) ? <div className="card-footer text-body-secondary text-center">
-                    End of the results </div> : <Loading/>}
+                    End of the results </div> : loading && <Loading/>}
                >
                     <div className="container">
                          <div className="row my-4">
